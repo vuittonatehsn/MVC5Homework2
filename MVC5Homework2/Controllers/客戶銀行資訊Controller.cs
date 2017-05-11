@@ -17,8 +17,8 @@ namespace MVC5Homework2.Controllers
         // GET: 客戶銀行資訊
         public ActionResult Index()
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料);
-            return View(客戶銀行資訊.ToList());
+            var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料).Where(w=>w.IsDeleted != true);
+            return View(客戶銀行資訊.Take(20));
         }
 
         // GET: 客戶銀行資訊/Details/5
@@ -48,10 +48,11 @@ namespace MVC5Homework2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
+        public ActionResult Create(客戶銀行資訊 客戶銀行資訊)
         {
             if (ModelState.IsValid)
             {
+                客戶銀行資訊.IsDeleted = false;
                 db.客戶銀行資訊.Add(客戶銀行資訊);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -82,7 +83,7 @@ namespace MVC5Homework2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
+        public ActionResult Edit(客戶銀行資訊 客戶銀行資訊)
         {
             if (ModelState.IsValid)
             {
@@ -114,8 +115,9 @@ namespace MVC5Homework2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
-            db.客戶銀行資訊.Remove(客戶銀行資訊);
+            //客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            //db.客戶銀行資訊.Remove(客戶銀行資訊);
+            db.客戶銀行資訊.Find(id).IsDeleted = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

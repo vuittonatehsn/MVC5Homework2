@@ -32,5 +32,7 @@ namespace MVC5Homework2.Models
         public string 帳戶號碼 { get; set; }
     
         public virtual 客戶資料 客戶資料 { get; set; }
+
+        public Nullable<bool> IsDeleted { get; set; } = false;
     }
 }

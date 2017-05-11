@@ -8,3 +8,4 @@ AS
 	WHERE a.客戶名稱 like N'%'+@param1+'%' 
 	OR b.銀行名稱 like N'%'+@param1+'%' 
 	OR c.姓名 like N'%'+@param1+'%'
+	AND a.IsDeleted != 1 AND b.IsDeleted != 1 AND c.IsDeleted != 1

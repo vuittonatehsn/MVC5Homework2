@@ -29,7 +29,7 @@
           <Property Name="分行代碼" Type="int" />
           <Property Name="帳戶名稱" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="帳戶號碼" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="客戶聯絡人">
           <Key>
@@ -131,7 +131,7 @@ warning 6002: The table/view 'C:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\MVC5HOMEWORK2
           <Property Name="分行代碼" Type="Int32" />
           <Property Name="帳戶名稱" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="帳戶號碼" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="客戶資料" Relationship="Self.FK_客戶銀行資訊_客戶資料" FromRole="客戶銀行資訊" ToRole="客戶資料" />
         </EntityType>
         <EntityType Name="客戶聯絡人">

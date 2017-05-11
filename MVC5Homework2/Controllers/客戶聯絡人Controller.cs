@@ -17,8 +17,8 @@ namespace MVC5Homework2.Controllers
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
-            return View(客戶聯絡人.ToList());
+            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(w=>w.IsDeleted != true);
+            return View(客戶聯絡人.Take(20));
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -48,7 +48,7 @@ namespace MVC5Homework2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        public ActionResult Create( 客戶聯絡人 客戶聯絡人)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace MVC5Homework2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        public ActionResult Edit(客戶聯絡人 客戶聯絡人)
         {
             if (ModelState.IsValid)
             {
@@ -114,8 +114,9 @@ namespace MVC5Homework2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            db.客戶聯絡人.Remove(客戶聯絡人);
+            //客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            //db.客戶聯絡人.Remove(客戶聯絡人);
+            db.客戶聯絡人.Find(id).IsDeleted = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

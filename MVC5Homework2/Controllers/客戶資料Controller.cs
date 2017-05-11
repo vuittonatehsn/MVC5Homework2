@@ -17,7 +17,7 @@ namespace MVC5Homework2.Controllers
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.ToList());
+            return View(db.客戶資料.Where(w => w.IsDeleted != true).Take(20));
         }
 
         // GET: 客戶資料/Details/5
@@ -109,8 +109,18 @@ namespace MVC5Homework2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            db.客戶資料.Remove(客戶資料);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //IQueryable<客戶聯絡人> 聯絡人列表 = db.客戶聯絡人.Where(r=>r.客戶Id == id);
+            //IQueryable<客戶銀行資訊> 銀行資訊列表 = db.客戶銀行資訊.Where(r => r.客戶Id == id);
+            //聯絡人列表.ToList().ForEach(w => w.IsDeleted = true);
+            //銀行資訊列表.ToList().ForEach(w => w.IsDeleted = true);
+            db.客戶聯絡人.Where(r => r.客戶Id == id).ToList().ForEach(w => w.IsDeleted = true);
+            db.客戶銀行資訊.Where(r => r.客戶Id == id).ToList().ForEach(w => w.IsDeleted = true);
+            db.客戶資料.Find(id).IsDeleted = true;
+            //db.客戶聯絡人.RemoveRange(聯絡人列表);
+            //db.客戶銀行資訊.RemoveRange(銀行資訊列表);
+            //db.客戶資料.Remove(客戶資料);
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

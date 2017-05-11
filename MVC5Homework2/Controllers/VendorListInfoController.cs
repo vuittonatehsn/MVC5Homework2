@@ -40,6 +40,7 @@ namespace MVC5Homework2.Controllers
             return View(memberView);
         }
 
+        [HttpPost]
         public ActionResult Search(string searchKey)
         {
             var result = vendorDB.usp_SearchVendor(searchKey).ToList();
