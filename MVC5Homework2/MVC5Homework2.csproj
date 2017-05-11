@@ -225,6 +225,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\dbo.MemberView.sql" />
+    <Content Include="App_Data\dbo.usp_SearchVendor.sql" />
     <Content Include="App_Data\客戶資料.mdf" />
     <Content Include="App_Data\客戶資料_log.ldf">
       <DependentUpon>客戶資料.mdf</DependentUpon>
