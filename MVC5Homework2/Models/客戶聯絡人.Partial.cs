@@ -10,21 +10,14 @@ namespace MVC5Homework2.Models
     public partial class 客戶聯絡人 : IValidatableObject
     {
         // public customer
-        public 客戶資料 資料
-        {
-            get
-            {
-                return 客戶資料;
-
-            }
-        }
+        
         //private 客戶資料Entities db = new 客戶資料Entities();
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             
             if (客戶資料.Email == Email)
             {
-                yield return new ValidationResult("error", new[] { "Email", "重複了" }); 
+                yield return new ValidationResult("Email跟客戶的重複了", new[] { "Email" }); 
 
             }
           
