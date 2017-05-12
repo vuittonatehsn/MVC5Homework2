@@ -9,20 +9,26 @@ namespace MVC5Homework2.Models
     [MetadataType(typeof(客戶聯絡人MetaData))]
     public partial class 客戶聯絡人 : IValidatableObject
     {
-        // public customer
-        
-        //private 客戶資料Entities db = new 客戶資料Entities();
+        private 客戶資料Entities db = new 客戶資料Entities();
+
+        //private string _customerEmail;
+        //public string CustomerEmail{
+        //    get {
+        //        return _customerEmail;
+        //    }
+        //    set
+        //    {
+        //        _customerEmail = 客戶資料.Email;
+        //    }
+        //}
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            
-            if (客戶資料.Email == Email)
+            if (db.客戶資料.Find(客戶Id).Email == Email)
             {
                 yield return new ValidationResult("Email跟客戶的重複了", new[] { "Email" }); 
-
             }
-          
         }
-        
     }
  
     

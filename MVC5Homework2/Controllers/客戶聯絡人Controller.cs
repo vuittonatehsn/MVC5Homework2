@@ -82,7 +82,7 @@ namespace MVC5Homework2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(客戶聯絡人 客戶聯絡人)
+        public ActionResult Edit(客戶聯絡人 客戶聯絡人) //[Bind(Exclude = "客戶資料")] 
         {
             if (ModelState.IsValid)
             {

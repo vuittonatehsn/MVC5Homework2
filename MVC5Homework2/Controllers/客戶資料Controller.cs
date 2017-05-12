@@ -17,7 +17,7 @@ namespace MVC5Homework2.Controllers
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.Where(w => w.IsDeleted != true).Take(20));
+            return View(db.客戶資料.Take(20)); //.Where(w => w.IsDeleted != true)
         }
 
         // GET: 客戶資料/Details/5
@@ -78,7 +78,7 @@ namespace MVC5Homework2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Edit( 客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {

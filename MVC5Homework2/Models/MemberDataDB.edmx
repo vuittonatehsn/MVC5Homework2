@@ -16,7 +16,7 @@
           <Property Name="傳真" Type="nvarchar" MaxLength="50" />
           <Property Name="地址" Type="nvarchar" MaxLength="100" />
           <Property Name="Email" Type="nvarchar" MaxLength="250" />
-          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="客戶銀行資訊">
           <Key>
@@ -42,7 +42,7 @@
           <Property Name="Email" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="手機" Type="nvarchar" MaxLength="50" />
           <Property Name="電話" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'C:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\MVC5HOMEWORK2\APP_DATA\客戶資料.MDF.dbo.MemberView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -116,7 +116,7 @@ warning 6002: The table/view 'C:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\MVC5HOMEWORK2
           <Property Name="傳真" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="地址" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="客戶銀行資訊" Relationship="Self.FK_客戶銀行資訊_客戶資料" FromRole="客戶資料" ToRole="客戶銀行資訊" />
           <NavigationProperty Name="客戶聯絡人" Relationship="Self.FK_客戶聯絡人_客戶資料" FromRole="客戶資料" ToRole="客戶聯絡人" />
         </EntityType>
@@ -145,7 +145,7 @@ warning 6002: The table/view 'C:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\MVC5HOMEWORK2
           <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="手機" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="電話" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="客戶資料" Relationship="Self.FK_客戶聯絡人_客戶資料" FromRole="客戶聯絡人" ToRole="客戶資料" />
         </EntityType>
         <EntityType Name="MemberView">
