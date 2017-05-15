@@ -7,6 +7,16 @@
 
 <h2>Index</h2>
 
+<input type="button" id="callJson" name="callJson" value="CallJson" />
+
+
+
+<form method="post">
+    客戶分類篩選:
+    @Html.DropDownList("myList", null, htmlAttributes: new { @class = "form-control" })
+    <button>搜尋</button>
+</form>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -29,6 +39,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客戶分類)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.IsDeleted)
@@ -56,6 +69,14 @@
         <td>
             @Html.DisplayFor(modelItem => item.Email)
         </td>
+    
+        <td>
+            
+            @Html.DropDownListFor(
+            modelItem => item.客戶分類,
+            new SelectList(ViewBag.myList, "Value", "Text")
+            )
+        </td>
         <td>
             @Html.RadioButton("IsDeleted", true, item.IsDeleted == true)
         </td>
@@ -69,3 +90,17 @@
 }
 
 </table>
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script>
+    //$(document).ready(function () {
+    //    alert("hi");
+    //});
+
+    $(function () {
+        $('#callJson').click(function () {
+            $.get('/客戶資料/GetJson', function (data) {
+                console.log(JSON.stringify(data));
+            });
+        });
+    });
+</script>

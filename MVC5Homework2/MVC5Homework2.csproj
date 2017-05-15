@@ -44,6 +44,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.87.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.87.1\lib\net40\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -160,6 +166,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attribute\CellPhoneDataTypeAttribute.cs" />
     <Compile Include="Attribute\CellPhoneValidationAttribute.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\VendorListInfoController.cs" />
@@ -173,6 +180,20 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EFRepository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EFUnitOfWork.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IRepository.EF6.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IUnitOfWork.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\MemberDataDB.Context.cs">
@@ -193,6 +214,12 @@
     <Compile Include="Models\MemberView.cs">
       <DependentUpon>MemberDataDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MemberViewRepository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RepositoryHelper.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
@@ -212,17 +239,26 @@
     <Compile Include="Models\客戶聯絡人.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶聯絡人Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\客戶資料.cs">
       <DependentUpon>MemberDataDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\客戶資料.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶資料Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\客戶銀行資訊.cs">
       <DependentUpon>MemberDataDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\客戶銀行資訊.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\客戶銀行資訊Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -242,6 +278,10 @@
     <Content Include="Models\EFGeneratePartialClass.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EFGeneratePartialClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\IRepository.EF6.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IRepository.EF6.cs</LastGenOutput>
     </Content>
     <Content Include="Models\MemberDataDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -314,6 +354,7 @@
     <Content Include="Views\VendorListInfo\VendorList.cshtml" />
     <Content Include="Views\VendorListInfo\Details.cshtml" />
     <Content Include="Views\VendorListInfo\Search.cshtml" />
+    <Content Include="Views\客戶資料\GetJson.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -21,6 +21,12 @@ namespace MVC5Homework2.Controllers
             return View(客戶聯絡人.Take(20));
         }
 
+        public ActionResult Index(string occupation)
+        {
+            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.職稱 == occupation).Where(w => w.IsDeleted != true);
+            return View(客戶聯絡人.Take(20));
+        }
+
         // GET: 客戶聯絡人/Details/5
         public ActionResult Details(int? id)
         {

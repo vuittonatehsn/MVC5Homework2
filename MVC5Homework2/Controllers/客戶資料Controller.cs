@@ -10,14 +10,26 @@ using MVC5Homework2.Models;
 
 namespace MVC5Homework2.Controllers
 {
-    public class 客戶資料Controller : Controller
+    public class 客戶資料Controller : BaseController
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+        客戶資料Repository repo = RepositoryHelper.Get客戶資料Repository();
 
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.Take(20)); //.Where(w => w.IsDeleted != true)
+            var result = repo.All();
+
+            ViewBag.myList = mySelectList;
+
+            //ViewBag.客戶分類list = new SelectList(new string[] { "A", "B", "C" }, result.Select(e=>e.客戶分類)).ToList();
+            return View(result); //.Where(w => w.IsDeleted != true)
+        }
+        [HttpPost]
+        public ActionResult Index(string myList)
+        {
+            var result = repo.GetListBySearch(myList);
+            ViewBag.myList = mySelectList;
+            return View(result);
         }
 
         // GET: 客戶資料/Details/5
@@ -27,7 +39,7 @@ namespace MVC5Homework2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.GetById(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -50,8 +62,8 @@ namespace MVC5Homework2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
+                repo.Add(客戶資料);
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +77,7 @@ namespace MVC5Homework2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.GetById(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -78,12 +90,11 @@ namespace MVC5Homework2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( 客戶資料 客戶資料)
+        public ActionResult Edit(int id, FormCollection form)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(客戶資料).State = EntityState.Modified;
-                db.SaveChanges();
+            var 客戶資料 = repo.GetById(id);
+            if(TryUpdateModel(客戶資料, new string[] { "客戶名稱", "統一編號", "電話", "傳真", "地址" , "Email"})){
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(客戶資料);
@@ -96,7 +107,7 @@ namespace MVC5Homework2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.GetById(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -109,29 +120,28 @@ namespace MVC5Homework2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            //客戶資料 客戶資料 = db.客戶資料.Find(id);
-            //IQueryable<客戶聯絡人> 聯絡人列表 = db.客戶聯絡人.Where(r=>r.客戶Id == id);
-            //IQueryable<客戶銀行資訊> 銀行資訊列表 = db.客戶銀行資訊.Where(r => r.客戶Id == id);
+            客戶資料 customerInfo = repo.GetById(id);
+            //客戶資料 客戶資料 = repo.客戶資料.Find(id);
+            //IQueryable<客戶聯絡人> 聯絡人列表 = repo.客戶聯絡人.Where(r=>r.客戶Id == id);
+            //IQueryable<客戶銀行資訊> 銀行資訊列表 = repo.客戶銀行資訊.Where(r => r.客戶Id == id);
             //聯絡人列表.ToList().ForEach(w => w.IsDeleted = true);
             //銀行資訊列表.ToList().ForEach(w => w.IsDeleted = true);
-            db.客戶聯絡人.Where(r => r.客戶Id == id).ToList().ForEach(w => w.IsDeleted = true);
-            db.客戶銀行資訊.Where(r => r.客戶Id == id).ToList().ForEach(w => w.IsDeleted = true);
-            db.客戶資料.Find(id).IsDeleted = true;
+            repo.Delete(customerInfo);
+            //db.客戶銀行資訊.Where(r => r.客戶Id == id).ToList().ForEach(w => w.IsDeleted = true);
+            //db.客戶資料.Find(id).IsDeleted = true;
             //db.客戶聯絡人.RemoveRange(聯絡人列表);
             //db.客戶銀行資訊.RemoveRange(銀行資訊列表);
             //db.客戶資料.Remove(客戶資料);
-
-            db.SaveChanges();
+            repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult GetJson()
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            repo.UnitOfWork.LazyLoadingEnabled = false;
+            return Json(repo.All(), JsonRequestBehavior.AllowGet);
         }
+
+        
     }
 }

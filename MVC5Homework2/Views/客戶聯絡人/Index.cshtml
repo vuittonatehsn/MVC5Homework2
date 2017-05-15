@@ -6,6 +6,12 @@
 
 <h2>Index</h2>
 
+<form method="post">
+    客戶 職稱欄位進行資料篩選:
+    @Html.DropDownList("myList", null, htmlAttributes: new { @class = "form-control" })
+    <button>搜尋</button>
+</form>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
