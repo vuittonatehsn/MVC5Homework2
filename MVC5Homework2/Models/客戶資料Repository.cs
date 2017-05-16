@@ -9,7 +9,7 @@ namespace MVC5Homework2.Models
 	{
         public override IQueryable<客戶資料> All()
         {
-            return base.All().Where(p => !p.IsDeleted).Take(20);
+            return base.All().Where(p => !p.IsDeleted).OrderBy(p=>p.Id);
         }
 
         public 客戶資料 GetById(int id)
@@ -30,8 +30,10 @@ namespace MVC5Homework2.Models
             entity.IsDeleted = true;
         }
 
-        
-
+        public 客戶資料 GetByAccount(string v)
+        {
+            return this.All().FirstOrDefault(p => p.Account == v);
+        }
     }
 
 	public  interface I客戶資料Repository : IRepository<客戶資料>

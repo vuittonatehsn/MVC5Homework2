@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Homework2.Models;
+using PagedList;
 
 namespace MVC5Homework2.Controllers
 {
@@ -15,14 +16,15 @@ namespace MVC5Homework2.Controllers
         客戶資料Repository repo = RepositoryHelper.Get客戶資料Repository();
 
         // GET: 客戶資料
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
+            int currentPage = page < 1 ? 1 : page;
             var result = repo.All();
-
+            var final =  result.ToPagedList(currentPage, 10);
             ViewBag.myList = mySelectList;
 
             //ViewBag.客戶分類list = new SelectList(new string[] { "A", "B", "C" }, result.Select(e=>e.客戶分類)).ToList();
-            return View(result); //.Where(w => w.IsDeleted != true)
+            return View(final); //.Where(w => w.IsDeleted != true)
         }
         [HttpPost]
         public ActionResult Index(string myList)

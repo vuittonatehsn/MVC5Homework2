@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'E:\ASPNET_MVC5\Project\MVC5Homework2\Models\MemberDataDB.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\ASPNET_MVC5\Project\MVC5HomeWork2\MVC5Homework2\Models\MemberDataDB.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

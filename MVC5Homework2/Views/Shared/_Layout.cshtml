@@ -47,7 +47,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">歡迎登入<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                    @Html.ActionLink("Hello " + User.Identity.Name + "!", "Manage", "Login", routeValues: null, htmlAttributes: new { title = "Manage" })
 
 
                                     <a href="@Url.Action("Logout", "Login")"><i class="icon-off"></i> 登出</a>

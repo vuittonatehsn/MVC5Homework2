@@ -18,6 +18,8 @@
           <Property Name="Email" Type="nvarchar" MaxLength="250" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="客戶分類" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Account" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="客戶銀行資訊">
           <Key>
@@ -46,7 +48,7 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'E:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\APP_DATA\客戶資料.MDF.dbo.MemberView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'C:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\MVC5HOMEWORK2\APP_DATA\客戶資料.MDF.dbo.MemberView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MemberView">
           <Key>
             <PropertyRef Name="客戶名稱" />
@@ -121,6 +123,8 @@ warning 6002: The table/view 'E:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\APP_DATA\客�
           <NavigationProperty Name="客戶銀行資訊" Relationship="Self.FK_客戶銀行資訊_客戶資料" FromRole="客戶資料" ToRole="客戶銀行資訊" />
           <NavigationProperty Name="客戶聯絡人" Relationship="Self.FK_客戶聯絡人_客戶資料" FromRole="客戶資料" ToRole="客戶聯絡人" />
           <Property Name="客戶分類" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="客戶銀行資訊">
           <Key>
@@ -225,6 +229,8 @@ warning 6002: The table/view 'E:\ASPNET_MVC5\PROJECT\MVC5HOMEWORK2\APP_DATA\客�
           <EntitySetMapping Name="客戶資料">
             <EntityTypeMapping TypeName="客戶資料Model.客戶資料">
               <MappingFragment StoreEntitySet="客戶資料">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
                 <ScalarProperty Name="客戶分類" ColumnName="客戶分類" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="客戶名稱" ColumnName="客戶名稱" />

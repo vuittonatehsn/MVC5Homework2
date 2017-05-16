@@ -1,4 +1,6 @@
-﻿@model IEnumerable<MVC5Homework2.Models.客戶資料>
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<MVC5Homework2.Models.客戶資料>
+@*@model IEnumerable<MVC5Homework2.Models.客戶資料>*@
 
 @{
     ViewBag.Title = "Index";
@@ -9,7 +11,7 @@
 
 <input type="button" id="callJson" name="callJson" value="CallJson" />
 
-
+<button class="btn btn-primary" id="ButtonExport" name="ButtonExport" value="匯出資料">匯出資料</button>
 
 <form method="post">
     客戶分類篩選:
@@ -23,28 +25,28 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.客戶名稱)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().客戶名稱)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.統一編號)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().統一編號)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.電話)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().電話)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.傳真)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().傳真)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.地址)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().地址)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.客戶分類)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().客戶分類)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().IsDeleted)
         </th>
         <th></th>
     </tr>
@@ -90,6 +92,9 @@
 }
 
 </table>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script>
     //$(document).ready(function () {
@@ -104,3 +109,47 @@
         });
     });
 </script>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var actionUrls = {
+                Upload: '@Url.Action("Upload", "ZipCode")',
+                Import: '@Url.Action("Import", "ZipCode")',
+                HasData: '@Url.Action("HasData", "ZipCode")',
+                ExportData: '@Url.Action("Export", "ZipCode")'
+            };
+            project.ZipCode.Initialize(actionUrls);
+        });
+        $('#ButtonExport').click( function () {
+            /// <summary>
+            /// 資料匯出
+            /// </summary>
+            $.ajax({
+                type: 'post',
+                url: '客戶資料/Export',
+                dataType: 'json',
+                cache: false,
+                async: false,
+                success: function (data) {
+                    if (data.Msg) {
+                        current.HasData = data.Msg;
+                        if (current.HasData == 'False') {
+                            project.AlertErrorMessage("錯誤", "尚未建立任何資料, 無法匯出資料.");
+                        }
+                        else {
+                            window.location = project.ActionUrls.ExportData;
+                        }
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $("#UploadForm").resetForm();
+                    project.AlertErrorMessage("錯誤", "資料匯出錯誤");
+                }
+            });
+        })
+
+    </script>
+}
+
