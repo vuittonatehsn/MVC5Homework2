@@ -10,21 +10,27 @@ using MVC5Homework2.Models;
 
 namespace MVC5Homework2.Controllers
 {
-    public class 客戶聯絡人Controller : Controller
+    public class 客戶聯絡人Controller : BaseController
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+        //private 客戶資料Entities db = new 客戶資料Entities();
+        客戶聯絡人Repository repo = RepositoryHelper.Get客戶聯絡人Repository();
 
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(w=>w.IsDeleted != true);
-            return View(客戶聯絡人.Take(20));
+            var data = repo.GetAllWith客戶資料();
+            ViewBag.myList = mySelectList;
+            //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(w => w.IsDeleted != true);
+            return View(data);
         }
 
+        [HttpPost]
         public ActionResult Index(string occupation)
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.職稱 == occupation).Where(w => w.IsDeleted != true);
-            return View(客戶聯絡人.Take(20));
+            var data = repo.GetAllWith客戶資料ByOccupation(occupation);
+            ViewBag.myList = mySelectList;
+            //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.職稱 == occupation).Where(w => w.IsDeleted != true);
+            return View(data);
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -34,7 +40,7 @@ namespace MVC5Homework2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo.GetById(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -58,8 +64,8 @@ namespace MVC5Homework2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
+                repo.Add(客戶聯絡人);
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +80,7 @@ namespace MVC5Homework2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo.GetById(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -92,8 +98,8 @@ namespace MVC5Homework2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶聯絡人).State = EntityState.Modified;
-                db.SaveChanges();
+                repo.Update(客戶聯絡人);    
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
@@ -107,7 +113,7 @@ namespace MVC5Homework2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo.GetById(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -120,20 +126,12 @@ namespace MVC5Homework2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            //客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            //db.客戶聯絡人.Remove(客戶聯絡人);
-            db.客戶聯絡人.Find(id).IsDeleted = true;
-            db.SaveChanges();
+            客戶聯絡人 客戶聯絡人 = repo.GetById(id);
+            repo.Delete(客戶聯絡人);
+            repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        
     }
 }

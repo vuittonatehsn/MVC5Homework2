@@ -42,5 +42,29 @@ namespace MVC5Homework2.Models
 			ObjectSet.Remove(entity);
 		}
 
-	}
+        public IQueryable<T> FindBy(Func<T, bool> predicate, string lazyIncludeString)
+        {
+            return ObjectSet.Include(lazyIncludeString).Where(predicate).AsQueryable<T>();
+        }
+
+        public virtual IQueryable<T> GetSort(Expression<Func<T, bool>> filter = null
+            , Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null
+            , string includeProperties = "")
+        {
+            IQueryable<T> query = ObjectSet;
+
+            if (filter != null)
+            {
+                query = query.AsNoTracking().Where(filter);
+            }
+
+            var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            query = properties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+            return orderBy != null ? orderBy(query) : query;
+        }
+
+
+    }
 }
