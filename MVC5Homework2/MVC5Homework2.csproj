@@ -366,6 +366,7 @@
     <Content Include="Views\VendorListInfo\Search.cshtml" />
     <Content Include="Views\客戶資料\GetJson.cshtml" />
     <Content Include="Views\Login\Manage.cshtml" />
+    <Content Include="Views\客戶聯絡人\Include.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

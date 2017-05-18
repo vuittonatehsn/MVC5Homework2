@@ -33,6 +33,15 @@ namespace MVC5Homework2.Controllers
             }
         }
 
+        public IEnumerable<SelectListItem> myOccupationSelectList
+        {
+            get
+            {
+                var data     = new SelectList(db.客戶聯絡人.Select(w => new { Value = w.職稱, Text = w.職稱 }), "Value", "Text");
+                return data;
+            }
+        }
+
         //[HttpPost]
         public ActionResult HasData()
         {
@@ -127,57 +136,7 @@ namespace MVC5Homework2.Controllers
         }
 
 
-        // Create a salted password given the salt value.
-        private byte[] CreateSaltedPassword(byte[] saltValue, byte[] unsaltedPassword)
-        {
-            // Add the salt to the hash.
-            byte[] rawSalted = new byte[unsaltedPassword.Length + saltValue.Length];
-            unsaltedPassword.CopyTo(rawSalted, 0);
-            saltValue.CopyTo(rawSalted, unsaltedPassword.Length);
-
-            //Create the salted hash.         
-            SHA1 sha1 = SHA1.Create();
-            byte[] saltedPassword = sha1.ComputeHash(rawSalted);
-
-            // Add the salt value to the salted hash.
-            byte[] dbPassword = new byte[saltedPassword.Length + saltValue.Length];
-            saltedPassword.CopyTo(dbPassword, 0);
-            saltValue.CopyTo(dbPassword, saltedPassword.Length);
-
-            return dbPassword;
-        }
-
-        // Compare the hashed password against the stored password.
-        private bool ComparePasswords(byte[] storedPassword, byte[] hashedPassword)
-        {
-            if (storedPassword == null || hashedPassword == null || hashedPassword.Length != storedPassword.Length - 50)
-                return false;
-
-            // Get the saved saltValue.
-            byte[] saltValue = new byte[50];
-            int saltOffset = storedPassword.Length - 50;
-            for (int i = 0; i < 50; i++)
-                saltValue[i] = storedPassword[saltOffset + i];
-
-            byte[] saltedPassword = CreateSaltedPassword(saltValue, hashedPassword);
-
-            // Compare the values.
-            return CompareByteArray(storedPassword, saltedPassword);
-        }
-
-        // Compare the contents of two byte arrays.
-        private bool CompareByteArray(byte[] array1, byte[] array2)
-        {
-            if (array1.Length != array2.Length)
-                return false;
-            for (int i = 0; i < array1.Length; i++)
-            {
-                if (array1[i] != array2[i])
-                    return false;
-            }
-            return true;
-        }
-
+       
 
     }
 }

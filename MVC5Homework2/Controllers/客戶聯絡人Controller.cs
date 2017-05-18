@@ -14,23 +14,57 @@ namespace MVC5Homework2.Controllers
     {
         //private 客戶資料Entities db = new 客戶資料Entities();
         客戶聯絡人Repository repo = RepositoryHelper.Get客戶聯絡人Repository();
-
+        [OutputCache(Duration = 5, Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
             var data = repo.GetAllWith客戶資料();
-            ViewBag.myList = mySelectList;
+            ViewBag.Occupation = myOccupationSelectList;
             //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(w => w.IsDeleted != true);
             return View(data);
         }
 
-        [HttpPost]
-        public ActionResult Index(string occupation)
+        public ActionResult Include(int id)
         {
-            var data = repo.GetAllWith客戶資料ByOccupation(occupation);
-            ViewBag.myList = mySelectList;
+   
+            var data = repo.FindBy(o => o.客戶Id == id, "客戶資料");
+            return View(data.ToList());
+        }
+        [HttpPost]
+        public ActionResult Include(int id, 客戶聯絡人[] items)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in items)
+                {
+                    var final = repo.FindBy(e => e.Id == item.Id, "").FirstOrDefault();
+                    final.職稱 = item.職稱;
+                    final.電話 = item.電話;
+                    final.手機 = item.手機;
+                }
+                repo.UnitOfWork.Context.Configuration.ValidateOnSaveEnabled = false;
+                repo.UnitOfWork.Commit();
+                
+                return RedirectToAction("Include", id);
+
+            }
+
+            var data = repo.FindBy(o => o.客戶Id == id, "客戶資料");
+            ViewData.Model = data;
+            return View("Include");
+        }
+
+
+
+
+
+        [HttpPost]
+        public ActionResult Index(string Occupation)
+        {
+            var data = repo.GetAllWith客戶資料ByOccupation(Occupation);
+            ViewBag.Occupation = myOccupationSelectList;
             //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.職稱 == occupation).Where(w => w.IsDeleted != true);
-            return View(data);
+            return View(data.ToList());
         }
 
         // GET: 客戶聯絡人/Details/5

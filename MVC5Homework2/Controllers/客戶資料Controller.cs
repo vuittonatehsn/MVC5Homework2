@@ -15,6 +15,7 @@ namespace MVC5Homework2.Controllers
     {
         客戶資料Repository repo = RepositoryHelper.Get客戶資料Repository();
 
+        [OutputCache(Duration = 5, Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         // GET: 客戶資料
         public ActionResult Index(int page = 1)
         {
@@ -26,13 +27,17 @@ namespace MVC5Homework2.Controllers
             //ViewBag.客戶分類list = new SelectList(new string[] { "A", "B", "C" }, result.Select(e=>e.客戶分類)).ToList();
             return View(final); //.Where(w => w.IsDeleted != true)
         }
+
+        [OutputCache(Duration = 5, Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         [HttpPost]
-        public ActionResult Index(string myList)
+        public ActionResult Index(string myList, int page = 1)
         {
+            int currentPage = page < 1 ? 1 : page;
             var result = repo.GetListBySearch(myList);
             ViewBag.myList = mySelectList;
-            return View(result);
+            return View(result.ToPagedList(currentPage, 10));
         }
+
 
         // GET: 客戶資料/Details/5
         public ActionResult Details(int? id)

@@ -74,9 +74,8 @@
     
         <td>
             
-            @Html.DropDownListFor(
-            modelItem => item.客戶分類,
-            new SelectList(ViewBag.myList, "Value", "Text")
+            @Html.DropDownListFor(modelItem => item.客戶分類,
+            new SelectList(ViewBag.myList, "Value", "Text", item.客戶分類)
             )
         </td>
         <td>
@@ -95,6 +94,8 @@
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
+
+
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script>
     //$(document).ready(function () {
@@ -104,7 +105,7 @@
     $(function () {
         $('#callJson').click(function () {
             $.get('/客戶資料/GetJson', function (data) {
-                console.log(JSON.stringify(data));
+                alert(JSON.stringify(data));
             });
         });
     });
@@ -113,15 +114,7 @@
 @section scripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
-            var actionUrls = {
-                Upload: '@Url.Action("Upload", "ZipCode")',
-                Import: '@Url.Action("Import", "ZipCode")',
-                HasData: '@Url.Action("HasData", "ZipCode")',
-                ExportData: '@Url.Action("Export", "ZipCode")'
-            };
-            project.ZipCode.Initialize(actionUrls);
-        });
+       
         $('#ButtonExport').click( function () {
             /// <summary>
             /// 資料匯出

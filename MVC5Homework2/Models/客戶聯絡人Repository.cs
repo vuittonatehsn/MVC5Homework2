@@ -14,7 +14,7 @@ namespace MVC5Homework2.Models
 
         public IQueryable<客戶聯絡人> GetAllWith客戶資料ByOccupation(string occupation)
         {
-            return this.FindBy(w => w.IsDeleted != true, "客戶資料").Where(客 => 客.職稱 == occupation);
+            return this.FindBy(w => w.IsDeleted != true, "客戶資料").Where(客 => 客.職稱.Contains(occupation));
         }
         public 客戶聯絡人 GetById(int id)
         {
