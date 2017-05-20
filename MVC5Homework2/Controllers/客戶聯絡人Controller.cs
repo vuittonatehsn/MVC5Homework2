@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Homework2.Models;
+using System.Linq.Dynamic;
+using PagedList;
 
 namespace MVC5Homework2.Controllers
 {
@@ -16,12 +18,15 @@ namespace MVC5Homework2.Controllers
         客戶聯絡人Repository repo = RepositoryHelper.Get客戶聯絡人Repository();
         [OutputCache(Duration = 5, Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         // GET: 客戶聯絡人
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, string sorting = "Id")
         {
-            var data = repo.GetAllWith客戶資料();
+            int currentPage = page < 1 ? 1 : page;
+            var data = repo.GetAllWith客戶資料().AsQueryable().OrderBy(sorting);
+            var final = data.ToPagedList(currentPage, 10);
+
             ViewBag.Occupation = myOccupationSelectList;
             //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(w => w.IsDeleted != true);
-            return View(data);
+            return View(final);
         }
 
         public ActionResult Include(int id)
@@ -31,27 +36,31 @@ namespace MVC5Homework2.Controllers
             return View(data.ToList());
         }
         [HttpPost]
-        public ActionResult Include(int id, 客戶聯絡人[] items)
+        public ActionResult Include(int id, BatchUpdateViewModel[] testList)
         {
             if (ModelState.IsValid)
             {
-                foreach (var item in items)
+                foreach (var item in testList)
                 {
-                    var final = repo.FindBy(e => e.Id == item.Id, "").FirstOrDefault();
+                    var final = repo.GetById(item.Id);
                     final.職稱 = item.職稱;
                     final.電話 = item.電話;
                     final.手機 = item.手機;
                 }
                 repo.UnitOfWork.Context.Configuration.ValidateOnSaveEnabled = false;
                 repo.UnitOfWork.Commit();
-                
-                return RedirectToAction("Include", id);
-
+                TempData["success"] = "更新成功";
+                //return RedirectToAction("Include", id);
+                //var result = repo.FindBy(o => o.客戶Id == id, "客戶資料");
+                //return PartialView(result.ToList());
             }
 
             var data = repo.FindBy(o => o.客戶Id == id, "客戶資料");
             ViewData.Model = data;
-            return View("Include");
+           
+            return PartialView();
+
+
         }
 
 
@@ -59,9 +68,9 @@ namespace MVC5Homework2.Controllers
 
 
         [HttpPost]
-        public ActionResult Index(string Occupation)
+        public ActionResult Index(string Occupation, string sorting = "Id")
         {
-            var data = repo.GetAllWith客戶資料ByOccupation(Occupation);
+            var data = repo.GetAllWith客戶資料ByOccupation(Occupation).OrderBy(sorting);
             ViewBag.Occupation = myOccupationSelectList;
             //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.職稱 == occupation).Where(w => w.IsDeleted != true);
             return View(data.ToList());

@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using MVC5Homework2.Models;
 using PagedList;
+using System.Reflection;
+using System.Linq.Expressions;
+using System.Web.Routing;
 
 namespace MVC5Homework2.Controllers
 {
@@ -17,10 +20,10 @@ namespace MVC5Homework2.Controllers
 
         [OutputCache(Duration = 5, Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         // GET: 客戶資料
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(int page=1, string sorting="Id")
         {
             int currentPage = page < 1 ? 1 : page;
-            var result = repo.All();
+            var result = repo.All().OrderByProperty(sorting);
             var final =  result.ToPagedList(currentPage, 10);
             ViewBag.myList = mySelectList;
 
@@ -37,6 +40,22 @@ namespace MVC5Homework2.Controllers
             ViewBag.myList = mySelectList;
             return View(result.ToPagedList(currentPage, 10));
         }
+
+        public ActionResult TestIndex(string myList, int page = 1, string sorting = "Id")
+        {
+            Expression<Func<客戶資料, string>> c = x => x.傳真;
+            
+            int currentPage = page < 1 ? 1 : page;
+
+            var result = repo.All();
+            var dataSort = result.OrderByProperty("傳真");
+            ViewBag.myList = mySelectList;
+            return View(result.ToPagedList(currentPage, 10));
+        }
+
+        
+
+
 
 
         // GET: 客戶資料/Details/5

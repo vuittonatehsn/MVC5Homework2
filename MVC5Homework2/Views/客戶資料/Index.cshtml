@@ -13,136 +13,146 @@
 
 <button class="btn btn-primary" id="ButtonExport" name="ButtonExport" value="匯出資料">匯出資料</button>
 
-<form method="post">
-    客戶分類篩選:
-    @Html.DropDownList("myList", null, htmlAttributes: new { @class = "form-control" })
-    <button>搜尋</button>
-</form>
+@Html.ActionLink("Export", "Export", "客戶資料")
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().客戶名稱)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().統一編號)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().電話)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().傳真)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().地址)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().客戶分類)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().IsDeleted)
-        </th>
-        <th></th>
-    </tr>
+    <form method="post">
+        客戶分類篩選:
+        @Html.DropDownList("myList", null, htmlAttributes: new { @class = "form-control" })
+        <button>搜尋</button>
+    </form>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.客戶名稱)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.統一編號)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.電話)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.傳真)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.地址)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-    
-        <td>
-            
-            @Html.DropDownListFor(modelItem => item.客戶分類,
-            new SelectList(ViewBag.myList, "Value", "Text", item.客戶分類)
-            )
-        </td>
-        <td>
-            @Html.RadioButton("IsDeleted", true, item.IsDeleted == true)
-        </td>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.FirstOrDefault().客戶名稱)*@
+                @Html.ActionLink("客戶名稱", "Index", new { sorting = "客戶名稱" })
+            </th>
+            <th>
+         
+                @Html.ActionLink("統一編號", "Index", new { sorting = "統一編號" })
+            </th>
+            <th>
+               
+                @Html.ActionLink("電話", "Index", new { sorting = "電話" })
+            </th>
+            <th>
+                @Html.ActionLink("傳真", "Index", new { sorting = "傳真" })
+            </th>
+            <th>
+        
+                @Html.ActionLink("電話", "Index", new { sorting = "電話" })
+            </th>
+            <th>
+          
+                @Html.ActionLink("Email", "Index", new { sorting = "Email" })
+            </th>
+            <th>
+     
+                @Html.ActionLink("客戶分類", "Index", new { sorting = "客戶分類" })
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().IsDeleted)
+           
+            </th>
+            <th></th>
+        </tr>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.客戶名稱)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.統一編號)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.電話)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.傳真)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.地址)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
 
-</table>
+                <td>
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                    @Html.DropDownListFor(modelItem => item.客戶分類,
+                        new SelectList(ViewBag.myList, "Value", "Text", item.客戶分類)
+                        )
+                </td>
+                <td>
+                    @Html.RadioButton("IsDeleted", true, item.IsDeleted == true)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
 
 
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-<script>
-    //$(document).ready(function () {
-    //    alert("hi");
-    //});
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script>
+        //$(document).ready(function () {
+        //    alert("hi");
+        //});
 
-    $(function () {
-        $('#callJson').click(function () {
-            $.get('/客戶資料/GetJson', function (data) {
-                alert(JSON.stringify(data));
+        $(function () {
+            $('#callJson').click(function () {
+                $.get('/客戶資料/GetJson', function (data) {
+                    alert(JSON.stringify(data));
+                });
             });
         });
-    });
-</script>
-
-@section scripts
-{
-    <script type="text/javascript">
-       
-        $('#ButtonExport').click( function () {
-            /// <summary>
-            /// 資料匯出
-            /// </summary>
-            $.ajax({
-                type: 'post',
-                url: '客戶資料/Export',
-                dataType: 'json',
-                cache: false,
-                async: false,
-                success: function (data) {
-                    if (data.Msg) {
-                        current.HasData = data.Msg;
-                        if (current.HasData == 'False') {
-                            project.AlertErrorMessage("錯誤", "尚未建立任何資料, 無法匯出資料.");
-                        }
-                        else {
-                            window.location = project.ActionUrls.ExportData;
-                        }
-                    }
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    $("#UploadForm").resetForm();
-                    project.AlertErrorMessage("錯誤", "資料匯出錯誤");
-                }
-            });
-        })
-
     </script>
-}
+
+    @section scripts
+    {
+        <script type="text/javascript">
+
+            $('#ButtonExport').click(function () {
+                /// <summary>
+                /// 資料匯出
+                /// </summary>
+                $.ajax({
+                    type: 'get',
+                    url: '客戶資料/HasData',
+                    dataType: 'json',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        if (data.Msg) {
+                            current.HasData = data.Msg;
+                            if (current.HasData == 'False') {
+                                project.AlertErrorMessage("錯誤", "尚未建立任何資料, 無法匯出資料.");
+                            }
+                            else {
+                                window.location = project.ActionUrls.ExportData;
+                            }
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        
+                        project.AlertErrorMessage("錯誤", "資料匯出錯誤");
+                    }
+                });
+            })
+
+        </script>
+    }
 

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace MVC5Homework2.Models
 {
@@ -64,6 +66,27 @@ namespace MVC5Homework2.Models
 
             return orderBy != null ? orderBy(query) : query;
         }
+
+
+        /// <summary>
+        /// ¦@¥Î
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="input"></param>
+        /// <param name="target"></param>
+        /// <param name="outExpr"></param>
+        public virtual void GetString<T>(string input, T target, Expression<Func<T, string>> outExpr)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                var expr = (MemberExpression)outExpr.Body;
+                var prop = (PropertyInfo)expr.Member;
+                prop.SetValue(target, input, null);
+            }
+        }
+
+        
+
 
 
     }

@@ -62,9 +62,10 @@ namespace MVC5Homework2.Controllers
                 DateTime.Now.ToString("yyyyMMddHHmmss"),
                 ".xlsx");
             
-            ExportExcelEventHandler(this.ControllerContext, dt, exportFileName, exportFileName);
-            //return File(ControllerContext.HttpContext.Response.OutputStream, "documents.zip", "application/zip");
-            return File(ControllerContext.HttpContext.Response.OutputStream, "application/vnd.ms-excel", exportFileName);
+            ExportExcelEventHandler( dt, exportFileName, exportFileName);
+            //return File(ControllerContext.HttpContext.Response.OutputStream, "application/vnd.ms-excel", "exportFileName");
+            
+            return File("~/App_Data/"+ exportFileName, "application/vnd.ms-excel");
         }
 
         private JArray GetExportData()
@@ -88,7 +89,7 @@ namespace MVC5Homework2.Controllers
             return jObjects;
         }
 
-        private void ExportExcelEventHandler(ControllerContext context, DataTable ExportData, string FileName, string SheetName)
+        private void ExportExcelEventHandler( DataTable ExportData, string FileName, string SheetName)
         {
             try
             {
@@ -96,34 +97,34 @@ namespace MVC5Homework2.Controllers
 
                 if (ExportData != null)
                 {
-                    context.HttpContext.Response.Clear();
+                    this.ControllerContext.HttpContext.Response.Clear();
 
                     // 編碼
-                    context.HttpContext.Response.ContentEncoding = Encoding.UTF8;
+                    this.ControllerContext.HttpContext.Response.ContentEncoding = Encoding.UTF8;
 
                     // 設定網頁ContentType
-                    context.HttpContext.Response.ContentType =
+                    this.ControllerContext.HttpContext.Response.ContentType =
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
                     // 匯出檔名
-                    var browser = context.HttpContext.Request.Browser.Browser;
+                    var browser = this.ControllerContext.HttpContext.Request.Browser.Browser;
                     var exportFileName = browser.Equals("Firefox", StringComparison.OrdinalIgnoreCase)
                         ? FileName
                         : HttpUtility.UrlEncode(FileName, Encoding.UTF8);
 
-                    context.HttpContext.Response.AddHeader(
+                    this.ControllerContext.HttpContext.Response.AddHeader(
                         "Content-Disposition",
                         string.Format("attachment;filename={0}", exportFileName));
 
                     // Add all DataTables in the DataSet as a worksheets
                     workbook.Worksheets.Add(ExportData, SheetName);
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        workbook.SaveAs(memoryStream);
-                        memoryStream.WriteTo(context.HttpContext.Response.OutputStream);
-                        memoryStream.Close();
-                    }
-                    //workbook.SaveAs("C:\\ASPNET_MVC5\\Project\\MVC5Homework2\\MVC5Homework2\\App_Data" + exportFileName);
+                    //using (var memoryStream = new MemoryStream())
+                    //{
+                    //    workbook.SaveAs(memoryStream);
+                    //    memoryStream.WriteTo(this.ControllerContext.HttpContext.Response.OutputStream);
+                    //    memoryStream.Close();
+                    //}
+                    workbook.SaveAs(@"~/App_Data/" + exportFileName);
 
             }
             workbook.Dispose();

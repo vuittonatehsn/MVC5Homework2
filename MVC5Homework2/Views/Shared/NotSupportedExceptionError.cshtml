@@ -1,0 +1,17 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    var ex = Model.Exception as System.NotSupportedException;
+}
+
+<h1 class="text-danger">傳入 的檔案不再</h1>
+<h2 class="text-danger">
+    @ex.Message
+</h2>
+
+<h3 class="text-danger">
+    @ex.Message
+</h3>
+
+<pre>@ex.ToString()</pre>

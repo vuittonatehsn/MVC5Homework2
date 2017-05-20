@@ -20,22 +20,28 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.職稱)
+            @*@Html.DisplayNameFor(model => model.職稱)*@
+            @Html.ActionLink("職稱", "Index", new { sorting = "職稱" })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.姓名)
+           
+            @Html.ActionLink("姓名", "Index", new { sorting = "姓名" })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+          
+            @Html.ActionLink("Email", "Index", new { sorting = "Email" })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.手機)
+           
+            @Html.ActionLink("手機", "Index", new { sorting = "手機" })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.電話)
+         
+            @Html.ActionLink("電話", "Index", new { sorting = "電話" })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
+            @*@Html.DisplayNameFor(model => model.客戶資料.客戶名稱)*@
+            @Html.ActionLink("客戶名稱", "Index", new { sorting = "客戶資料.客戶名稱" })
         </th>
         <th></th>
     </tr>

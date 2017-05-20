@@ -15,10 +15,10 @@
                 @Html.DisplayNameFor(model => model.職稱)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.姓名)
+                @*@Html.DisplayNameFor(model => model.姓名)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @*@Html.DisplayNameFor(model => model.Email)*@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.手機)
@@ -27,44 +27,51 @@
                 @Html.DisplayNameFor(model => model.電話)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
+                @*@Html.DisplayNameFor(model => model.IsDeleted)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
+                @*@Html.DisplayNameFor(model => model.客戶資料.客戶名稱)*@
             </th>
             <th></th>
         </tr>
-    @{
-        var items = Model.ToArray();
-    }
-    @for (var i = 0; i < items.Length; i++)
-    {
-        <tr>
-            <td>
-                @Html.EditorFor(modelItem => items[i].職稱)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => items[i].姓名)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => items[i].Email)
-            </td>
-            <td>
-                @Html.EditorFor(modelItem => items[i].手機)
-            </td>
-            <td>
-                @Html.EditorFor(modelItem => items[i].電話)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => items[i].IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => items[i].客戶資料.客戶名稱)
-            </td>
-      
-        </tr>
-    }
+        @{
+            var testList = Model.ToArray();
+        }
+        @for (int i = 0; i < testList.Length; i++)
+        {
+            @Html.HiddenFor(modelItem => testList[i].Id)
+            <tr>
 
-    </table>
+                <td>
+                    @Html.EditorFor(modelItem => testList[i].職稱)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => 客戶聯絡人[i].姓名)*@
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => 客戶聯絡人[i].Email)*@
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => testList[i].手機)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => testList[i].電話)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => 客戶聯絡人[i].IsDeleted)*@
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => items[i].客戶資料.客戶名稱)*@
+                </td>
+
+            </tr>
+        }
+
+    </table> 
     <button>執行批次更新</button>
+}
+@if (!String.IsNullOrEmpty(Convert.ToString(TempData["success"])))
+{
+
+    <script>alert('@TempData["success"]');</script>
 }
